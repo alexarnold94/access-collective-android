@@ -10,8 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
 
             android:name=".WelcomePage"
             android:label="@string/title_activity_welcome_page"
