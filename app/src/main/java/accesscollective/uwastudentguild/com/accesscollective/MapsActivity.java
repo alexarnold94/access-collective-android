@@ -1,5 +1,6 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -39,8 +47,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public float topRightLat;
         public float topRightLong;
         public int zoom;
-        //float bottomLeftLat, float bottomLeftLong, float bottomRightLat, float bottomRightLong, int zoom
+        
         public campusBounds() {
+            // ...
+        }
+    }
+
+    public static class marker {
+
+        public float latitude;
+        public float longitude;
+
+        public marker() {
             // ...
         }
     }
@@ -61,10 +79,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //Change this so gets campusBoundsToGet from list activity or get location functionality
         String campusBoundsToGet = "UWA";
-        DatabaseReference ref = mDatabase.child("campusBounds").child(campusBoundsToGet);
+        DatabaseReference campusBoundsRef = mDatabase.child("campusBounds").child(campusBoundsToGet);
 
         // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
+        // could change this to addListenerForSingleValueEvent
+        campusBoundsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 campusBounds boundsToUse = dataSnapshot.getValue(campusBounds.class);
@@ -83,8 +102,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        // Create marker
-        LatLng uwaLandMark = new LatLng(-31.979908, 115.818039);
-        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title("Marker for UWA"));
+        /*Get layers and associated markers, and store in hashmap (for potential future use) */
+        DatabaseReference layersWithMarkersRef = mDatabase.child("campusMarkers").child(campusBoundsToGet);
+        final Map<String, marker> allMarkerLocations = new HashMap<>();
+
+        layersWithMarkersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    String layerKey = postSnapshot.getKey();
+                    Log.i("INFO","Layer  is  " + layerKey);
+                    for (DataSnapshot postSnapshot2: dataSnapshot.child(layerKey).getChildren()){
+                        String markerValue = postSnapshot2.getKey();
+                        marker markerToStore = postSnapshot2.getValue(marker.class);
+
+                        allMarkerLocations.put(layerKey, markerToStore);
+
+                        LatLng uwaLandMark = new LatLng(markerToStore.latitude, markerToStore.longitude);
+                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(layerKey));
+
+                        Log.i("INFO","Lat and Long  is  " + Float.toString(markerToStore.latitude) + " " + Float.toString(markerToStore.longitude) );
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("INFO","The read failed: " + databaseError.getCode());
+            }
+        });
+
     }
 }
