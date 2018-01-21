@@ -19,6 +19,8 @@ public class WelcomePage extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setTitle(getString(R.string.title_activity_welcome_page));
+
         TextView welcomePageTV = (TextView) findViewById(R.id.welcomePageTitle);
         welcomePageTV.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
     }
