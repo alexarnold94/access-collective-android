@@ -111,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         layersWithMarkersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     String layerKey = postSnapshot.getKey();
                     Log.i("INFO","Layer  is  " + layerKey);
@@ -137,7 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             public boolean onMarkerClick(Marker marker) {
-                
+
                 String title = marker.getTitle();
                 Log.i("INFO", "Getting marker info:  " + marker.getTitle());
                 Intent intent = new Intent(getApplicationContext(), DisplayImageActivity.class);
