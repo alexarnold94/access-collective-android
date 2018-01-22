@@ -1,5 +1,6 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,18 +49,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public float topRightLat;
         public float topRightLong;
         public int zoom;
-        
+
         public campusBounds() {
             // ...
         }
     }
 
-    public static class marker {
+    public static class markerLocation {
 
         public float latitude;
         public float longitude;
 
-        public marker() {
+        public markerLocation() {
             // ...
         }
     }
@@ -104,7 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         /*Get layers and associated markers, and store in hashmap (for potential future use) */
         DatabaseReference layersWithMarkersRef = mDatabase.child("campusMarkers").child(campusBoundsToGet);
-        final Map<String, marker> allMarkerLocations = new HashMap<>();
+        final Map<String, markerLocation> allMarkerLocations = new HashMap<>();
 
         layersWithMarkersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,12 +117,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.i("INFO","Layer  is  " + layerKey);
                     for (DataSnapshot postSnapshot2: dataSnapshot.child(layerKey).getChildren()){
                         String markerValue = postSnapshot2.getKey();
-                        marker markerToStore = postSnapshot2.getValue(marker.class);
+                        markerLocation markerToStore = postSnapshot2.getValue(markerLocation.class);
 
                         allMarkerLocations.put(layerKey, markerToStore);
 
                         LatLng uwaLandMark = new LatLng(markerToStore.latitude, markerToStore.longitude);
-                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(layerKey));
+                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue));
 
                         Log.i("INFO","Lat and Long  is  " + Float.toString(markerToStore.latitude) + " " + Float.toString(markerToStore.longitude) );
                     }
@@ -131,6 +133,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onCancelled(DatabaseError databaseError) {
                 Log.i("INFO","The read failed: " + databaseError.getCode());
             }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+            public boolean onMarkerClick(Marker marker) {
+                
+                String title = marker.getTitle();
+                Log.i("INFO", "Getting marker info:  " + marker.getTitle());
+                Intent intent = new Intent(getApplicationContext(), DisplayImageActivity.class);
+                intent.putExtra("MARKER_ID", marker.getTitle());
+                startActivity(intent);
+                return false;
+                }
         });
 
     }
