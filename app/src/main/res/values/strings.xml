@@ -10,4 +10,15 @@
 
     <string name="button_select_campus">Select Campus</string>
     <string name="button_get_current_location">Get Current Location</string>
+
+    <string name="nav_bar_title_desc">An app by Coders for Causes</string>
+
+    <string name="nav_bar_change_campus">Change Campus</string>
+    <string name="nav_bar_bookmarked_locations">Bookmarked Locations</string>
+    <string name="nav_bar_suggest_new_location">Suggest New Location</string>
+    <string name="nav_bar_notifications">Notifications</string>
+    <string name="nav_bar_help">Help</string>
+    <string name="nav_bar_about">About</string>
+    <string name="nav_bar_feedback">Feedback</string>
+
 </resources>

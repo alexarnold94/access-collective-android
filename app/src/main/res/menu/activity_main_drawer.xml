@@ -5,21 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_change"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="@string/nav_bar_change_campus"  />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="@string/nav_bar_bookmarked_locations" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_suggest"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="@string/nav_bar_suggest_new_location" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="@string/nav_bar_notifications" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/nav_bar_help" />
     </group>
 
     <item android:title="Communicate">
@@ -27,11 +31,11 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/nav_bar_about" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_feedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="@string/nav_bar_feedback" />
         </menu>
     </item>
 
