@@ -33,7 +33,6 @@ public class DisplayImageActivity extends AppCompatActivity {
         storageReference.child("image1.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
                 Log.i("INFO", uri.toString());
                 ImageView imageView = (ImageView) findViewById(R.id.mapImageView);
                 Glide.with(getApplicationContext()).load(uri.toString()).into(imageView);
@@ -44,6 +43,31 @@ public class DisplayImageActivity extends AppCompatActivity {
                 // Handle any errors
             }
         });
+
+        /* iterate through images */
+        ImageView imageView = (ImageView) findViewById(R.id.mapImageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("== My activity ===","OnClick is called");
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                storageReference.child("image2.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.i("INFO", uri.toString());
+                        ImageView imageView = (ImageView) findViewById(R.id.mapImageView);
+                        Glide.with(getApplicationContext()).load(uri.toString()).into(imageView);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            }
+        });
+
     }
 
 }
