@@ -73,11 +73,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_change) {
             // Handle the camera action
-        } else if (id == R.id.nav_bookmark) {
 
         } else if (id == R.id.nav_suggest) {
-
-        } else if (id == R.id.nav_notifications) {
 
         } else if (id == R.id.nav_help) {
 
