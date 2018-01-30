@@ -40,10 +40,10 @@ public class SelectCampus extends AppCompatActivity {
                 new String[] {"First Line", "Second Line"},
                 new int[] {R.id.text1, R.id.text2});
 
-        Iterator it= UWA.entrySet().iterator();
-        while(it.hasNext()) {
+        for (Map.Entry<String,String> pair:UWA.entrySet()) {
+
+
             HashMap<String,String> resultsMap = new HashMap<>();
-            Map.Entry pair= (Map.Entry)it.next();
             resultsMap.put("First Line", pair.getKey().toString());
             resultsMap.put("Second Line", pair.getValue().toString());
             listItems.add(resultsMap);
