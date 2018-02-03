@@ -5,34 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_change"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/nav_bar_change_campus"  />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_suggest"
+            android:icon="@drawable/ic_add_location_black_24dp"
+            android:title="@string/nav_bar_suggest_new_location" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="@string/nav_bar_help" />
 
-    <item android:title="Communicate">
-        <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_group_black_24dp"
+                android:title="@string/nav_bar_about" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
-
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_send_black_24dp"
+                android:title="@string/nav_bar_feedback" />
+    </group>
 </menu>
