@@ -29,6 +29,12 @@ public class DisplayImageActivity extends AppCompatActivity {
         String markerName = getIntent().getStringExtra("MARKER_ID");
         Log.i("INFO", "RECEIVED MARKER : " + markerName);
 
+        String floorPlansStorageLocation = "floorplans/" + markerName  + "/";
+
+        /* get floor plan data */
+
+
+        /*display images*/
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("image1.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
