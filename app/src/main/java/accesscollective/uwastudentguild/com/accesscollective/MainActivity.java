@@ -1,20 +1,22 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,24 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Get campus name that was selected from select campus activity
+        String campusNameSelected = getIntent().getStringExtra("CAMPUS_NAME");
+        Log.d("INFO", "RECEIVED CAMPUS NAME FROM SELECT CAMPUS ACTIVITY : " + campusNameSelected);
+
+        // use bundle to send campus name information to the map fragment
+        // so fragment knows what campus map to load on initialization
+        Bundle data = new Bundle();
+        data.putString("CAMPUS_NAME", campusNameSelected);
+
+        // display map fragment
+        LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.fragment_container);
+        MapFragment mapFragment = new MapFragment();
+        mapFragment.setArguments(data);
+        final android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, mapFragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -87,5 +107,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
