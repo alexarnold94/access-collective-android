@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "96600087022",
-    "firebase_url": "https://homefornow-fd495.firebaseio.com",
-    "project_id": "homefornow-fd495",
-    "storage_bucket": "homefornow-fd495.appspot.com"
+    "project_number": "508657596874",
+    "firebase_url": "https://access-collective-3c5ea.firebaseio.com",
+    "project_id": "access-collective-3c5ea",
+    "storage_bucket": "access-collective-3c5ea.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:96600087022:android:69be4c89de7047c5",
+        "mobilesdk_app_id": "1:508657596874:android:69be4c89de7047c5",
         "android_client_info": {
           "package_name": "accesscollective.uwastudentguild.com.accesscollective"
         }
       },
       "oauth_client": [
         {
-          "client_id": "96600087022-h240599jck1t8uo8qvl2tkj5p52b0su6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "accesscollective.uwastudentguild.com.accesscollective",
-            "certificate_hash": "9874214c036efc4450dad6c6e07f57d12b43fd56"
-          }
-        },
-        {
-          "client_id": "96600087022-jsprhd392iv64ds00aqjg4nchgaudjjg.apps.googleusercontent.com",
+          "client_id": "508657596874-mnrvv1nnrn8ju7lm0qbgrsii1ln4cbkv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD7Qcxk53y3OlEF2f0CYIumrCWAqy_U38k"
+          "current_key": "AIzaSyDheExkNhcvao-CFNrP8rlw9DqCAXht-TI"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "96600087022-jsprhd392iv64ds00aqjg4nchgaudjjg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
