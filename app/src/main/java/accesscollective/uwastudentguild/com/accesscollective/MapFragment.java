@@ -89,13 +89,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 campusBounds boundsToUse = dataSnapshot.getValue(campusBounds.class);
-                Log.i("INFO", "Getting bounds info:  " + Float.toString(boundsToUse.bottomLeftLat));
 
                 // Define bounds for campus, centre camera within bounds, and prevent scrolling outside of them
-                LatLngBounds uwaCampusBounds = new LatLngBounds(
-                        new LatLng(boundsToUse.bottomLeftLat, boundsToUse.bottomLeftLong), new LatLng(boundsToUse.topRightLat, boundsToUse.topRightLong));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uwaCampusBounds.getCenter(), boundsToUse.zoom));
-                mMap.setLatLngBoundsForCameraTarget(uwaCampusBounds);
+                if(boundsToUse != null){
+                    Log.i("INFO", "Getting bounds info:  " + Float.toString(boundsToUse.bottomLeftLat));
+
+                    LatLngBounds uwaCampusBounds = new LatLngBounds(
+                            new LatLng(boundsToUse.bottomLeftLat, boundsToUse.bottomLeftLong), new LatLng(boundsToUse.topRightLat, boundsToUse.topRightLong));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uwaCampusBounds.getCenter(), boundsToUse.zoom));
+                    mMap.setLatLngBoundsForCameraTarget(uwaCampusBounds);
+                }
             }
 
             @Override

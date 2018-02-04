@@ -33,4 +33,8 @@ public class WelcomePage extends AppCompatActivity {
         startActivity(Intent);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
