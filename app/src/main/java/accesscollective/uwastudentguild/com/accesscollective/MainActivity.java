@@ -1,6 +1,7 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity
         // Get campus name that was selected from select campus activity
         String campusNameSelected = getIntent().getStringExtra("CAMPUS_NAME");
         Log.d("INFO", "RECEIVED CAMPUS NAME FROM SELECT CAMPUS ACTIVITY : " + campusNameSelected);
+
+        // Set title
+        setTitle(campusNameSelected);
 
         // use bundle to send campus name information to the map fragment
         // so fragment knows what campus map to load on initialization
