@@ -70,17 +70,12 @@ public class SelectCampus extends AppCompatActivity {
                     Log.d("INFO", pair.getValue().toString());
                     //send campus name to the main activity
                     intent.putExtra("CAMPUS_NAME", pair.getValue().toString());
-                    startActivity(intent);
+
                 }
+                startActivity(intent);
             }
 
         });
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), WelcomePage.class);
-        startActivity(intent);
     }
 
 }

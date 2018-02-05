@@ -30,11 +30,9 @@ public class WelcomePage extends AppCompatActivity {
 
     public void goToMainActivity(View view) {
         Intent Intent = new Intent(this, MainActivity.class);
+        Intent.putExtra("CAMPUS_NAME", "UWA Crawley");
         startActivity(Intent);
+
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 }
