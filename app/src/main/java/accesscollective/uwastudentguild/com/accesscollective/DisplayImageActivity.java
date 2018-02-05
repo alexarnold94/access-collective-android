@@ -1,3 +1,4 @@
+/*
 package accesscollective.uwastudentguild.com.accesscollective;
 
 import android.os.Bundle;
@@ -21,10 +22,17 @@ public class DisplayImageActivity extends AppCompatActivity {
 
         String floorPlansStorageLocation = "floorplans/" + markerName  + "/";
 
-        /* get floor plan data */
+        */
+/* get floor plan data *//*
 
+
+*/
 /*
-        *//*display images*//*
+        *//*
+*/
+/*display images*//*
+*/
+/*
         // not using for now as glide version is resulting in issues
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         storageReference.child("image1.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -41,7 +49,11 @@ public class DisplayImageActivity extends AppCompatActivity {
             }
         });
 
-        *//* iterate through images *//*
+        *//*
+*/
+/* iterate through images *//*
+*/
+/*
         ImageView imageView = (ImageView) findViewById(R.id.mapImageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +75,10 @@ public class DisplayImageActivity extends AppCompatActivity {
                     }
                 });
             }
-        });*/
+        });*//*
+
 
     }
 
 }
+*/

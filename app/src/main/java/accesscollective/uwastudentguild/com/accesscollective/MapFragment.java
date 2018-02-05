@@ -76,7 +76,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         String campusNameFromMain = getArguments().getString("CAMPUS_NAME");
-        Log.d("INFO", "RECEIVED CAMPUS NAME FROM MAIN ACTIVITY : " + campusNameFromMain);
 
         //Change this so gets campusBoundsToGet from list activity or get location functionality
         //String campusBoundsToGet = "UWA";
@@ -92,8 +91,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 // Define bounds for campus, centre camera within bounds, and prevent scrolling outside of them
                 if(boundsToUse != null){
-                    Log.i("INFO", "Getting bounds info:  " + Float.toString(boundsToUse.bottomLeftLat));
-
                     LatLngBounds uwaCampusBounds = new LatLngBounds(
                             new LatLng(boundsToUse.bottomLeftLat, boundsToUse.bottomLeftLong), new LatLng(boundsToUse.topRightLat, boundsToUse.topRightLong));
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uwaCampusBounds.getCenter(), boundsToUse.zoom));
@@ -117,7 +114,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     String layerKey = postSnapshot.getKey();
-                    Log.i("INFO","Layer  is  " + layerKey);
 
                     for (DataSnapshot postSnapshot2: dataSnapshot.child(layerKey).getChildren()){
                         String markerValue = postSnapshot2.getKey();
@@ -127,8 +123,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         LatLng uwaLandMark = new LatLng(markerToStore.latitude, markerToStore.longitude);
                         mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue));
-
-                        Log.i("INFO","Lat and Long  is  " + Float.toString(markerToStore.latitude) + " " + Float.toString(markerToStore.longitude) );
                     }
                 }
             }
@@ -143,7 +137,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public boolean onMarkerClick(Marker marker) {
 
                 String title = marker.getTitle();
-                Log.i("INFO", "Getting marker info:  " + marker.getTitle());
 
                 //In case we decide to use activity to display floor plans on checkpoint click
                 //Intent intent = new Intent(getApplicationContext(), DisplayImageActivity.class);

@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
 
         // Get campus name that was selected from select campus activity
         String campusNameSelected = getIntent().getStringExtra("CAMPUS_NAME");
-        Log.d("INFO", "RECEIVED CAMPUS NAME FROM SELECT CAMPUS ACTIVITY : " + campusNameSelected);
 
         // Set title
         setTitle(campusNameSelected);

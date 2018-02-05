@@ -67,7 +67,6 @@ public class SelectCampus extends AppCompatActivity {
                 HashMap<String, String> test = listItems.get(i);
 
                 for (Map.Entry<String,String> pair : test.entrySet()) {
-                    Log.d("INFO", pair.getValue().toString());
                     //send campus name to the main activity
                     intent.putExtra("CAMPUS_NAME", pair.getValue().toString());
 
