@@ -5,24 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="accesscollective.uwastudentguild.com.accesscollective.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="accesscollective.uwastudentguild.com.accesscollective.DisplayImageActivity"
+    tools:showIn="@layout/activity_display_image">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Access Collective"
+    <ImageView
+        android:id="@+id/mapImageView"
+        android:layout_width="355dp"
+        android:layout_height="337dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/common_full_open_on_phone" />
 
-    <LinearLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
+    <ViewFlipper
+        android:layout_width="344dp"
+        android:layout_height="71dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
 </android.support.constraint.ConstraintLayout>
