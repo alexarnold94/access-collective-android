@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -30,21 +31,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.map_fragment, container, false);
-
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        SupportMapFragment fragment = new SupportMapFragment();
-        transaction.add(R.id.mapView, fragment);
-        transaction.commit();
-
-        fragment.getMapAsync(this);
-
-        return view;
-    }
 
     public static class campusBounds {
 
@@ -68,6 +54,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             // ...
         }
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.map_fragment, container, false);
+
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        SupportMapFragment fragment = new SupportMapFragment();
+        transaction.add(R.id.mapView, fragment);
+        transaction.commit();
+
+        fragment.getMapAsync(this);
+
+        return view;
+    }
+
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -104,6 +106,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        /* Get layer colours */
+        final Map<String, Integer> allLayerColours = new HashMap<>();
+
+        DatabaseReference layerColour = mDatabase.child("layerColours").child("standard");
+        layerColour.addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot){
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
+                    String layerType = postSnapshot.getKey();
+                    Integer hue = postSnapshot.getValue(Integer.class);
+
+                    Log.d("INFO", "hue value of " + hue + " for layer " + layerType);
+                    allLayerColours.put(layerType, hue);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.i("INFO","The read failed: " + databaseError.getCode());
+            }
+        });
+
         /*Get layers and associated markers, and store in hashmap (for potential future use) */
         DatabaseReference layersWithMarkersRef = mDatabase.child("campusMarkers").child(campusBoundsToGet);
         final Map<String, markerLocation> allMarkerLocations = new HashMap<>();
@@ -113,7 +137,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    String layerKey = postSnapshot.getKey();
+                    final String layerKey = postSnapshot.getKey();
+
+                    Log.d("INFO", "Getting checkpoints for layer " + layerKey);
 
                     for (DataSnapshot postSnapshot2: dataSnapshot.child(layerKey).getChildren()){
                         String markerValue = postSnapshot2.getKey();
@@ -121,8 +147,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                         allMarkerLocations.put(layerKey, markerToStore);
 
+                        Log.d("INFO", markerToStore.latitude +  "  " + markerToStore.longitude);
+
+                        float hueToUse = (float) allLayerColours.get(layerKey);
+
                         LatLng uwaLandMark = new LatLng(markerToStore.latitude, markerToStore.longitude);
-                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue));
+                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue).icon(BitmapDescriptorFactory
+                                .defaultMarker(hueToUse)));
                     }
                 }
             }
