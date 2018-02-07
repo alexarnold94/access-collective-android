@@ -2,6 +2,7 @@ package accesscollective.uwastudentguild.com.accesscollective;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+
+    String subject= "Access Collective App feedback";
+    String [] addresses= {("test.codersforcauses@gmail.com")};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +61,11 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, mapFragment);
         fragmentTransaction.commit();
-    }
+
+
+
+        }
+
 
     @Override
     public void onBackPressed() {
@@ -107,6 +116,17 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_feedback) {
+
+            Intent intent= new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            if(intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+
+
+
 
         }
 
