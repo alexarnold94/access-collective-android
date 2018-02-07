@@ -23,9 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
 
-    String subject= "Access Collective App feedback";
-    String [] addresses= {("test.codersforcauses@gmail.com")};
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +59,7 @@ public class MainActivity extends AppCompatActivity
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, mapFragment);
         fragmentTransaction.commit();
-
-
-
-        }
+    }
 
 
     @Override
@@ -75,7 +70,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-
     }
 
     @Override
@@ -103,6 +97,10 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        // email address and subject for feedback button
+        String subject= "Access Collective App feedback";
+        String [] addresses= {("test.codersforcauses@gmail.com")};
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -124,10 +122,6 @@ public class MainActivity extends AppCompatActivity
             if(intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             }
-
-
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
