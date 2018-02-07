@@ -25,4 +25,6 @@
 
     <string name="map_fragment">Map</string>
 
+    <string name="filterMarkersDialogTitle">Filter Markers</string>
+
 </resources>

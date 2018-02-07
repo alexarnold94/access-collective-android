@@ -1,9 +1,12 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -68,6 +74,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fragment.getMapAsync(this);
 
         return view;
+    }
+
+    public void confirmFireMissiles(Bundle layersToSend) {
+        DialogFragment newFragment = new filterMarkersDialogFragment();
+        newFragment.setArguments(layersToSend);
+        newFragment.show(getFragmentManager(), "missiles");
     }
 
 
@@ -120,6 +132,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d("INFO", "hue value of " + hue + " for layer " + layerType);
                     allLayerColours.put(layerType, hue);
                 }
+
+                Set<String> layersSet = allLayerColours.keySet();
+                String[] layersArray = layersSet.toArray(new String[layersSet.size()]);
+
+                Bundle layers =new Bundle();
+                layers.putStringArray("LAYERS",layersArray);
+                confirmFireMissiles(layers);
             }
 
             @Override
@@ -176,6 +195,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
+
+
 
     }
 
