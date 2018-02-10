@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private DatabaseReference mDatabase;
+    private ArrayList<String> layersDisplayed;
+    //private Map<String, Collection<markerLocation>> markersToMap;
+    private Map<String, Collection<Marker>> markersToMap;
 
     public static class campusBounds {
 
@@ -93,6 +97,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         this.layerTypesSelected = layersToFilter
     }*/
 
+   public void hideLayers(ArrayList<String> layersToHide){
+
+   }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("INFO", "Activity Result");
@@ -104,6 +112,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     //String res = bundle.getString("test", test);
                     ArrayList<String> selectedLayers = bundle.getStringArrayList("SELECTED_LAYERS");
                     Log.d("INFO", "Layers selected: " + selectedLayers);
+
+                    Log.d("INFO", Integer.toString(markersToMap.get("layer").size()));
+
+                    ArrayList<String> toHide = layersDisplayed;
+                    toHide.removeAll(selectedLayers);
+
+                    ArrayList<String> toShow = selectedLayers;
+                    toShow.remove(layersDisplayed);
+
+                    for(String layerToHide : toHide){
+                        Log.d("INFO", "Hiding " + layerToHide);
+                        for(Marker markerToHide : markersToMap.get(layerToHide)){
+                            markerToHide.setVisible(false);
+                        }
+                    }
+
+                    for(String layerToShow : toShow){
+                        Log.d("INFO", "Showing " + layerToShow);
+                        for(Marker markerToShow : markersToMap.get(layerToShow)){
+                            markerToShow.setVisible(true);
+                        }
+                    }
+
+                    layersDisplayed.removeAll(toHide);
+                    layersDisplayed.addAll(toShow);
 
 
                 } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -163,14 +196,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     allLayerColours.put(layerType, hue);
                 }
 
-                /*Set<String> layersSet = allLayerColours.keySet();
-                String[] layersArray = layersSet.toArray(new String[layersSet.size()]);
-
-                Bundle layers =new Bundle();
-                layers.putStringArray("LAYERS",layersArray);
-                displayLayerSelectionDialog(layers);
-*/
-
             }
 
             @Override
@@ -181,7 +206,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         /*Get layers and associated markers, and store in hashmap (for potential future use) */
         DatabaseReference layersWithMarkersRef = mDatabase.child("campusMarkers").child(campusBoundsToGet);
-        final Map<String, markerLocation> allMarkerLocations = new HashMap<>();
+        //final Map<String, markerLocation> allMarkerLocations = new HashMap<>();
+        //final Map<String, Collection<markerLocation>> allMarkerLocations = new HashMap<>();
+        final Map<String, Collection<Marker>> allMarkerLocations = new HashMap<>();
 
         layersWithMarkersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -191,20 +218,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     final String layerKey = postSnapshot.getKey();
 
                     Log.d("INFO", "Getting checkpoints for layer " + layerKey);
+                    layersDisplayed = new ArrayList<String>();
+                    layersDisplayed.add(layerKey);
 
                     for (DataSnapshot postSnapshot2: dataSnapshot.child(layerKey).getChildren()){
                         String markerValue = postSnapshot2.getKey();
                         markerLocation markerToStore = postSnapshot2.getValue(markerLocation.class);
-
-                        allMarkerLocations.put(layerKey, markerToStore);
 
                         Log.d("INFO", markerToStore.latitude +  "  " + markerToStore.longitude);
 
                         float hueToUse = (float) allLayerColours.get(layerKey);
 
                         LatLng uwaLandMark = new LatLng(markerToStore.latitude, markerToStore.longitude);
-                        mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue).icon(BitmapDescriptorFactory
-                                .defaultMarker(hueToUse)));
+
+                        /*mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue).icon(BitmapDescriptorFactory
+                                .defaultMarker(hueToUse)));*/
+
+
+                        //allMarkerLocations.put(layerKey, markerToStore);
+                        if(!allMarkerLocations.containsKey(layerKey)){
+                            //allMarkerLocations.put(layerKey, new ArrayList<markerLocation>());
+                            allMarkerLocations.put(layerKey, new ArrayList<Marker>());
+                        }
+                        allMarkerLocations.get(layerKey).add(mMap.addMarker(new MarkerOptions().position(uwaLandMark).title(markerValue).icon(BitmapDescriptorFactory
+                                .defaultMarker(hueToUse))));
                     }
                 }
             }
@@ -214,6 +251,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.i("INFO","The read failed: " + databaseError.getCode());
             }
         });
+
+        markersToMap = allMarkerLocations;
 
         FloatingActionButton myFab = (FloatingActionButton) getView().findViewById(R.id.openDialogFAB);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +264,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Bundle layers =new Bundle();
                 layers.putStringArray("LAYERS",layersArray);
                 displayLayerSelectionDialog(layers);
-
             }
         });
 
@@ -241,8 +279,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return false;
             }
         });
-
-
 
     }
 
