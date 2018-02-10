@@ -163,13 +163,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     allLayerColours.put(layerType, hue);
                 }
 
-                Set<String> layersSet = allLayerColours.keySet();
+                /*Set<String> layersSet = allLayerColours.keySet();
                 String[] layersArray = layersSet.toArray(new String[layersSet.size()]);
 
                 Bundle layers =new Bundle();
                 layers.putStringArray("LAYERS",layersArray);
                 displayLayerSelectionDialog(layers);
-
+*/
 
             }
 
@@ -212,6 +212,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.i("INFO","The read failed: " + databaseError.getCode());
+            }
+        });
+
+        FloatingActionButton myFab = (FloatingActionButton) getView().findViewById(R.id.openDialogFAB);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("INFO", "Clicked FAB");
+                Set<String> layersSet = allLayerColours.keySet();
+                String[] layersArray = layersSet.toArray(new String[layersSet.size()]);
+
+                Bundle layers =new Bundle();
+                layers.putStringArray("LAYERS",layersArray);
+                displayLayerSelectionDialog(layers);
+
             }
         });
 
