@@ -1,5 +1,7 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -76,12 +78,40 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    public void confirmFireMissiles(Bundle layersToSend) {
+    public void displayLayerSelectionDialog(Bundle layersToSend) {
         DialogFragment newFragment = new filterMarkersDialogFragment();
         newFragment.setArguments(layersToSend);
-        newFragment.show(getFragmentManager(), "missiles");
+        //newFragment.show(getFragmentManager(), "missiles");
+
+        // setup link back to use and display
+        newFragment.setTargetFragment(this, 1);
+        newFragment.show(getFragmentManager().beginTransaction(), "missiles");
+
     }
 
+   /* public void setLayersToFilter(ArrayList layersToFilter){
+        this.layerTypesSelected = layersToFilter
+    }*/
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("INFO", "Activity Result");
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    Bundle bundle = data.getExtras();
+                    String test = "";
+                    //String res = bundle.getString("test", test);
+                    ArrayList<String> selectedLayers = bundle.getStringArrayList("SELECTED_LAYERS");
+                    Log.d("INFO", "Layers selected: " + selectedLayers);
+
+
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    Log.i("INFO", "Get message from dialog failed");
+                }
+                break;
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap map) {
@@ -138,7 +168,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 Bundle layers =new Bundle();
                 layers.putStringArray("LAYERS",layersArray);
-                confirmFireMissiles(layers);
+                displayLayerSelectionDialog(layers);
+
+
             }
 
             @Override
