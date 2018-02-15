@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class filterMarkersDialogFragment extends DialogFragment {
         selectedLayers = new ArrayList(); // Where we track selected layers
 
         final String[] layersToList = getArguments().getStringArray("LAYERS");
+
         //ArrayList<String> list2 = new ArrayList<>();
         //list2.add("test");
 
@@ -43,7 +45,7 @@ public class filterMarkersDialogFragment extends DialogFragment {
                                     // Else, if the item is already in the array, remove it
                                     mSelectedItems.remove(Integer.valueOf(which));
                                     // TEST THIS
-                                    selectedLayers.remove(which);
+                                    selectedLayers.remove(layersToList[which]);
                                 }
                             }
                         })
