@@ -14,11 +14,14 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class MapActivity extends FragmentActivity implements FirebaseUpdateFragment.UpdateCallbacks, OnMapReadyCallback {
@@ -99,7 +102,7 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
                 Log.e("MapActivity", "Creating marker " + checkpoint.getName() + " in layer " + layer.getName());
                 LatLng latLng = new LatLng(checkpoint.getLatitude(), checkpoint.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.title(checkpoint.getName()).position(latLng);
+                markerOptions.title(checkpoint.getName()).position(latLng).icon(layer.getImageBitmapDescriptor(this, 3));
                 if (!checkpoint.getDescription().equals("")) {
                     markerOptions.snippet(checkpoint.getDescription());
                 }
