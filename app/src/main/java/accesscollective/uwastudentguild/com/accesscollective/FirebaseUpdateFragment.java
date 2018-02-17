@@ -30,7 +30,7 @@ public class FirebaseUpdateFragment extends Fragment {
 
     public interface UpdateCallbacks {
         void onPreExecute();
-        void onPostExecute(ArrayList<Layer> layers);
+        void onPostExecute(Campus campus);
     }
 
     private UpdateCallbacks mCallbacks;
@@ -57,12 +57,13 @@ public class FirebaseUpdateFragment extends Fragment {
         new UpdateTask().execute("UWA Crawley");
     }
 
-    private class UpdateTask extends AsyncTask<String, Void, ArrayList<Layer>> {
+    private class UpdateTask extends AsyncTask<String, Void, Campus> {
 
         private final String ERROR_CLASS_NAME = UpdateTask.class.getSimpleName();
         private long total = 1;
         private long count = 0;
-        private ArrayList<Layer> layers = new ArrayList<>();
+        private Layer[] layers;
+        private Campus campus;
         private boolean mError;
 
         @Override
@@ -76,13 +77,16 @@ public class FirebaseUpdateFragment extends Fragment {
         }
 
         @Override
-        protected ArrayList<Layer> doInBackground(String... strings) {
+        protected Campus doInBackground(String... strings) {
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("campusMarkersTest/" + strings[0]);
 
             databaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     total = dataSnapshot.getChildrenCount();
+                    int layersIndex = 0;
+                    layers = new Layer[(int) total];
+
                     Log.e("UpdateTask", "total = " + total);
                     for (DataSnapshot layer: dataSnapshot.getChildren()) {
                         System.out.println("Layer = " + layer.getKey());
@@ -114,7 +118,7 @@ public class FirebaseUpdateFragment extends Fragment {
                             }
                         }
                         Log.e("UpdateFragment", "Creating a new Layer for layer = " + layer.getKey());
-                        layers.add(new Layer(layer.getKey(), image, checkpoints));
+                        layers[layersIndex++] = new Layer(layer.getKey(), image, checkpoints);
                         count++;
                         Log.e("UpdateFragment", "count = " + count);
                     }
@@ -122,16 +126,20 @@ public class FirebaseUpdateFragment extends Fragment {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    Log.e("UpdateFragment", "Datbase error downloading Layer data: " + databaseError.toException());
+                    mError = true;
                 }
             });
 
-            int dataLoop = 0;
+            int layerLoop = 0;
             while (count < total) {
-                if (dataLoop == 0) {
+                if (layerLoop == 0) {
                     Log.e("UpdateFragment", "Data loop has started!");
                 }
-                dataLoop++;
+                layerLoop++;
+                if (mError) {
+                    return null;
+                }
             }
 
             count = 0;
@@ -205,14 +213,57 @@ public class FirebaseUpdateFragment extends Fragment {
                 imageLoop++;
             }
 
-            return layers;
+            count = 0;
+            databaseRef = FirebaseDatabase.getInstance().getReference().child("campusBounds/" + strings[0]);
+
+            databaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    double bottomLeftLat = 0.0, bottomLeftLong = 0.0, topRightLat = 0.0, topRightLong = 0.0, zoom = 0.0;
+                    for (DataSnapshot data: dataSnapshot.getChildren()) {
+                        if (data.getKey().equals("bottomLeftLat")) {
+                            bottomLeftLat = data.getValue(Double.class);
+                        } else if (data.getKey().equals("bottomLeftLong")) {
+                            bottomLeftLong = data.getValue(Double.class);
+                        } else if (data.getKey().equals("topRightLat")) {
+                            topRightLat = data.getValue(Double.class);
+                        } else if (data.getKey().equals("topRightLong")) {
+                            topRightLong = data.getValue(Double.class);
+                        } else if (data.getKey().equals("zoom")) {
+                            zoom = data.getValue(Double.class);
+                        }
+                    }
+
+                    campus = new Campus(dataSnapshot.getKey(), bottomLeftLat, bottomLeftLong, topRightLat, topRightLong, zoom, layers);
+                    count = total;
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e("UpdateFragment", "Database error trying to download Campus data: " + databaseError.toException());
+                    mError = true;
+                }
+            });
+
+            int campusLoop = 0;
+            while (count < total) {
+                if (campusLoop == 0) {
+                    Log.e("UpdateFragment", "Campus loop has started!");
+                }
+                if (mError) {
+                    return null;
+                }
+                campusLoop++;
+            }
+
+            return campus;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Layer> layers) {
-            super.onPostExecute(layers);
+        protected void onPostExecute(Campus campus) {
+            super.onPostExecute(campus);
             if (mCallbacks != null) {
-                mCallbacks.onPostExecute(layers);
+                mCallbacks.onPostExecute(campus);
             } else {
                 Log.e(ERROR_CLASS_NAME, "mCallbacks is null for onPostExecute()");
             }

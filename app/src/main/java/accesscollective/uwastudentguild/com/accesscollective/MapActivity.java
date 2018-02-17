@@ -24,11 +24,8 @@ import java.util.ArrayList;
 public class MapActivity extends FragmentActivity implements FirebaseUpdateFragment.UpdateCallbacks, OnMapReadyCallback {
 
     private ProgressBar mProgressBar;
-    private ArrayList<Layer> layers;
+    private Campus campus;
     private boolean mHasDownloaded;
-    private FirebaseUpdateFragment mUpdateFragment;
-    private com.google.android.gms.maps.MapFragment mMapFragment;
-    private final int flid = 12345678;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +42,9 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mUpdateFragment = (FirebaseUpdateFragment) fragmentManager.findFragmentByTag("FirebaseUpdateFragment");
+        FirebaseUpdateFragment updateFragment = (FirebaseUpdateFragment) fragmentManager.findFragmentByTag("FirebaseUpdateFragment");
 
-        if (mUpdateFragment == null) {
+        if (updateFragment == null) {
             getSupportFragmentManager().beginTransaction().add(new FirebaseUpdateFragment(), "FirebaseUpdateFragment").commit();
         }
     }
@@ -65,25 +62,26 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
     }
 
     @Override
-    public void onPostExecute(ArrayList<Layer> layers) {
+    public void onPostExecute(Campus campus) {
         Log.e("MapActivity", "onPostExecute(layers) called!");
         mHasDownloaded = true;
-        this.layers = layers;
+        this.campus = campus;
 
-        if (layers != null) {
-            for (Layer layer : layers) {
+        if (campus != null) {
+            for (Layer layer : campus.getLayers()) {
                 Log.e("MapActivity", "Layer: " + layer.getName());
                 for (Checkpoint checkpoint : layer.getCheckpoints()) {
                     Log.e("MapActivity","Checkpoint: " + checkpoint.getName());
                 }
             }
         } else {
-            Log.e("MapActivity", "Layers is null");
+            // TODO Load a default map?
+            Log.e("MapActivity", "Campus is null");
         }
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(-31.98200, 115.8150000))
-                .zoom(15)
+                .target(campus.getCentre())
+                .zoom((float) campus.getZoom())
                 .build();
         MapFragment mapFragment = MapFragment.newInstance(new GoogleMapOptions().camera(cameraPosition));
         getFragmentManager().beginTransaction().add(R.id.frame_map, mapFragment).commit();
@@ -95,7 +93,7 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
         Log.e("MapActivity", "Map ready!");
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        for (Layer layer: layers) {
+        for (Layer layer: campus.getLayers()) {
             Log.e("MapActivity", "Creating checkpoints for " + layer.getName());
             for (Checkpoint checkpoint: layer.getCheckpoints()) {
                 Log.e("MapActivity", "Creating marker " + checkpoint.getName() + " in layer " + layer.getName());
