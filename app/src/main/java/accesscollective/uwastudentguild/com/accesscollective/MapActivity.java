@@ -14,6 +14,10 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -77,32 +81,32 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
             Log.e("MapActivity", "Layers is null");
         }
 
-        MapFragment mFragment = MapFragment.newInstance();
-        getFragmentManager().beginTransaction().add(R.id.frame_map, mFragment).commit();
-
-        FrameLayout fl = new FrameLayout(this);
-        fl.setBackgroundColor(Color.WHITE); //change to whatever color your activity/fragment has set as its background color
-        fl.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)); //cover the whole frame
-        //View.generateViewId()generate a new View ID. This requires API 17, so if you're supporting lower than that use just a static integer instead
-        fl.setId(flid);
-        ((FrameLayout) findViewById(R.id.frame_map)).addView(fl);
-        mFragment.getMapAsync(this);
-
-        // Do map stuff here
-        //mProgressBar.setVisibility(View.INVISIBLE);
-        //mMapView.setVisibility(View.VISIBLE);
-
-        // Necessary to avoid name clash with the Google Maps MapFragment
-//        mMapFragment = (com.google.android.gms.maps.MapFragment) getFragmentManager()
-//                .findFragmentById(R.id.map_fragment);
-//        mMapFragment.getView().setVisibility(View.INVISIBLE);
-//        mMapFragment.getMapAsync(this);
-        //Log.e("MapActivity", "mMapFragment.getMapAsync() called");
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(-31.98200, 115.8150000))
+                .zoom(15)
+                .build();
+        MapFragment mapFragment = MapFragment.newInstance(new GoogleMapOptions().camera(cameraPosition));
+        getFragmentManager().beginTransaction().add(R.id.frame_map, mapFragment).commit();
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.e("MapActivity", "Map ready!");
         mProgressBar.setVisibility(View.INVISIBLE);
+
+        for (Layer layer: layers) {
+            Log.e("MapActivity", "Creating checkpoints for " + layer.getName());
+            for (Checkpoint checkpoint: layer.getCheckpoints()) {
+                Log.e("MapActivity", "Creating marker " + checkpoint.getName() + " in layer " + layer.getName());
+                LatLng latLng = new LatLng(checkpoint.getLatitude(), checkpoint.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.title(checkpoint.getName()).position(latLng);
+                if (!checkpoint.getDescription().equals("")) {
+                    markerOptions.snippet(checkpoint.getDescription());
+                }
+                googleMap.addMarker(markerOptions);
+            }
+        }
     }
 }
