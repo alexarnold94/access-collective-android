@@ -22,4 +22,9 @@ public class Layer {
     public Checkpoint[] getCheckpoints() {
         return checkpoints;
     }
+
+    public String getImageName() {
+        String[] strings = imageRef.split("/");
+        return strings[strings.length - 1];
+    }
 }

@@ -3,6 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:visibility="visible" />
+
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         class="com.google.android.gms.maps.SupportMapFragment"
