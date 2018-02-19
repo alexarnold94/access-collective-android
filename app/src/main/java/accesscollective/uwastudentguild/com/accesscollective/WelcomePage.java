@@ -36,4 +36,8 @@ public class WelcomePage extends AppCompatActivity {
 
     }
 
+    public void goToMapActivity(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
 }
