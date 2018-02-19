@@ -6,20 +6,40 @@
     android:layout_height="match_parent"
     tools:context="accesscollective.uwastudentguild.com.accesscollective.MapActivity">
 
-    <ProgressBar
-        android:id="@+id/pb_loading_indicator"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerInParent="true"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:visibility="invisible"/>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/frame_map">
 
     </FrameLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.arlib.floatingsearchview.FloatingSearchView
+            android:id="@+id/floating_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:floatingSearch_searchBarMarginLeft="@dimen/search_view_inset"
+            app:floatingSearch_searchBarMarginTop="@dimen/search_view_inset"
+            app:floatingSearch_searchBarMarginRight="@dimen/search_view_inset"
+            app:floatingSearch_searchHint="Search..."
+            app:floatingSearch_suggestionsListAnimDuration="250"
+            app:floatingSearch_showSearchKey="false"
+            app:floatingSearch_leftActionMode="showHamburger"
+            app:floatingSearch_menu="@menu/activity_main_drawer"
+            app:floatingSearch_close_search_on_keyboard_dismiss="true"/>
+
+        <ProgressBar
+            android:id="@+id/pb_loading_indicator"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

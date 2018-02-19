@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -29,12 +30,14 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
     private ProgressBar mProgressBar;
     private Campus campus;
     private boolean mHasDownloaded;
+    private FloatingSearchView mSearchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         mProgressBar = findViewById(R.id.pb_loading_indicator);
+        mSearchBar = findViewById(R.id.floating_search_view);
 
         if (savedInstanceState != null) {
             mHasDownloaded = savedInstanceState.getBoolean("hasDownloaded", false);
@@ -95,10 +98,11 @@ public class MapActivity extends FragmentActivity implements FirebaseUpdateFragm
     public void onMapReady(GoogleMap googleMap) {
         Log.e("MapActivity", "Map ready!");
         mProgressBar.setVisibility(View.INVISIBLE);
+        mSearchBar.setVisibility(View.VISIBLE);
 
         for (Layer layer: campus.getLayers()) {
             Log.e("MapActivity", "Creating checkpoints for " + layer.getName());
-            for (Checkpoint checkpoint: layer.getCheckpoints()) {
+            for (Checkpoint checkpoint : layer.getCheckpoints()) {
                 Log.e("MapActivity", "Creating marker " + checkpoint.getName() + " in layer " + layer.getName());
                 LatLng latLng = new LatLng(checkpoint.getLatitude(), checkpoint.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions();
