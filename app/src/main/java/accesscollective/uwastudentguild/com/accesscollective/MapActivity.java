@@ -141,7 +141,8 @@ public class MapActivity extends FragmentActivity implements NavigationView.OnNa
             Intent Intent = new Intent(this, SelectCampus.class);
             startActivity(Intent);
         } else if (id == R.id.nav_suggest) {
-
+            Intent Intent = new Intent(this, ContactsActivity.class);
+            startActivity(Intent);
         } else if (id == R.id.nav_help) {
 
         } else if (id == R.id.nav_share) {
