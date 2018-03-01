@@ -59,6 +59,7 @@ public class MapActivity extends FragmentActivity implements NavigationView.OnNa
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         }
+        getPreferences(0).edit().putBoolean("hasDownloaded", mHasDownloaded).apply();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FirebaseUpdateFragment updateFragment = (FirebaseUpdateFragment) fragmentManager.findFragmentByTag("FirebaseUpdateFragment");
@@ -84,6 +85,7 @@ public class MapActivity extends FragmentActivity implements NavigationView.OnNa
     public void onPostExecute(Campus campus) {
         Log.e("MapActivity", "onPostExecute(layers) called!");
         mHasDownloaded = true;
+        getPreferences(0).edit().putBoolean("hasDownloaded", true).apply();
         this.campus = campus;
 
         if (campus != null) {
@@ -160,5 +162,18 @@ public class MapActivity extends FragmentActivity implements NavigationView.OnNa
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.e("MapActivity", "onResume called");
+        super.onResume();
+        if (!getPreferences(0).getBoolean("hasDownloaded", false)) {
+            mSearchBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mSearchBar.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 }

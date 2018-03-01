@@ -29,10 +29,9 @@ public class WelcomePage extends AppCompatActivity {
     }
 
     public void goToMainActivity(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("CAMPUS_NAME", "UWA Crawley");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        Intent Intent = new Intent(this, MainActivity.class);
+        Intent.putExtra("CAMPUS_NAME", "UWA Crawley");
+        startActivity(Intent);
 
     }
 
