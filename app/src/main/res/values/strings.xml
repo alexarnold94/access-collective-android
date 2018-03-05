@@ -18,11 +18,32 @@
     <string name="nav_bar_title_desc">An app by Coders for Causes</string>
 
     <string name="nav_bar_change_campus">Change Campus</string>
-    <string name="nav_bar_suggest_new_location">Suggest New Location</string>
+    <string name="nav_bar_suggest_new_location">Emergency Contact Numbers</string>
     <string name="nav_bar_help">Help</string>
     <string name="nav_bar_about">About</string>
     <string name="nav_bar_feedback">Feedback</string>
 
     <string name="map_fragment">Map</string>
+
+    <string name="title_activity_contacts">Emergency contact numbers</string>
+    <string name="contacts_life_threatening"> Life threatening emergencies</string>
+    <string name="contacts_life_threatening_num"> 000 </string>
+    <string name="contacts_life_threatening_desc"> Fire, Ambulance, Police 24 hours 7 days a week </string>
+    <string name="contacts_police_nonemergency">Police non emergency</string>
+    <string name="contacts_police_nonemergency_num"> 131 444 </string>
+    <string name="contacts_police_nonemergency_desc"> 24 hours 7 days a week </string>
+    <string name="contacts_security_emergency"> Security emergency </string>
+    <string name="contacts_security_emergency_num"> 6488 2222  </string>
+    <string name="contacts_security_emergency_desc">24 hours 7 days a week</string>
+    <string name="contacts_security_nonemergency">Campus Security not urgent</string>
+    <string name="contacts_security_nonemergency_num"> 6488 3020</string>
+    <string name="contacts_security_nonemergency_desc">24 hours 7 days a week</string>
+    <string name="contacts_poison">Poisons Information Centre</string>
+    <string name="contacts_poison_number"> 131 126</string>
+    <string name="contacts_poison_desc"> What to do about poisoning, bites, stings and etc. </string>
+    <string name="contacts_mental">Mental Health Emergency Response Line</string>
+    <string name="contacts_mental_num">9224 8888</string>
+    <string name="contacts_sarc">Sexual Assault Resource Center</string>
+    <string name="contacts_sarc_num">9340 1828</string>
 
 </resources>

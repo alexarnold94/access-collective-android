@@ -1,5 +1,6 @@
 package accesscollective.uwastudentguild.com.accesscollective;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -76,7 +78,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         String campusNameFromMain = getArguments().getString("CAMPUS_NAME");
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = map.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            (getActivity()) , R.raw.style_json));
 
+            if (!success) {
+                Log.e(accesscollective.uwastudentguild.com.accesscollective.MapFragment.class.getSimpleName(), "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e(accesscollective.uwastudentguild.com.accesscollective.MapFragment.class.getSimpleName(), "Can't find style. Error: ", e);
+        }
         //Change this so gets campusBoundsToGet from list activity or get location functionality
         //String campusBoundsToGet = "UWA";
         String campusBoundsToGet = campusNameFromMain;
